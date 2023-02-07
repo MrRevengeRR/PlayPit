@@ -1,0 +1,227 @@
+#include "gameOfLife.h"
+#include <cstdlib>
+#include <time.h>
+
+void initGameOfLife(bool matrix[40][40], int rows, int columns) {
+    // Init random seed
+    srand(time(NULL));
+
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < columns; j++) {
+            matrix[i][j] = rand() % 10 == 0 ? true : false;
+        }
+    }
+}
+
+void drawGameOfLife(bool matrix[40][40], int rows, int columns, int cellSize) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < columns; j++) {
+            DrawRectangleLines(i * cellSize + 222, j * cellSize, cellSize, cellSize, LIGHTGRAY);
+            if (isAlive(matrix, i, j, rows, columns))
+                DrawRectangle(i * cellSize + 223, j * cellSize+1, cellSize-2, cellSize-2, YELLOW);
+            else
+                DrawRectangle(i * cellSize + 223, j * cellSize+1, cellSize-2, cellSize-2, BLACK);
+        }
+    }
+}
+
+bool isAlive(bool matrix[40][40], int i, int j, int rows, int columns) {
+    int liveCells = 0;
+    
+    if (i == 0) {
+        if (j == 0) {
+            if (matrix[i+1][j] == true) {
+                liveCells++;
+            }
+            if (matrix[i][j+1] == true) {
+                liveCells++;
+            }
+            if (matrix[i+1][j+1] == true) {
+                liveCells++;
+            }
+            
+            if (matrix[i][j] == true)
+                return liveCells > 1 && liveCells < 4 ? true : false;
+            else
+                return liveCells == 3 ? true : false;
+        }
+
+        else if (j == columns-1) {
+            if (matrix[i+1][j] == true) {
+                liveCells++;
+            }
+            if (matrix[i][j-1] == true) {
+                liveCells++;
+            }
+            if (matrix[i+1][j-1] == true) {
+                liveCells++;
+            }
+
+            if (matrix[i][j] == true)
+                return liveCells > 1 && liveCells < 4 ? true : false;
+            else
+                return liveCells == 3 ? true : false;
+        }
+
+        else {
+            if (matrix[i][j-1] == true) {
+                liveCells++;
+            }
+            if (matrix[i+1][j-1] == true) {
+                liveCells++;
+            }
+            if (matrix[i+1][j] == true) {
+                liveCells++;
+            }
+            if (matrix[i+1][j+1] == true) {
+                liveCells++;
+            }
+            if (matrix[i][j+1] == true) {
+                liveCells++;
+            }
+
+            if (matrix[i][j] == true)
+                return liveCells > 1 && liveCells < 4 ? true : false;
+            else
+                return liveCells == 3 ? true : false;
+        }
+    }
+
+    else if (i == rows-1) {
+        if (j == 0) {
+            if (matrix[i-1][j] == true) {
+                liveCells++;
+            }
+            if (matrix[i][j+1] == true) {
+                liveCells++;
+            }
+            if (matrix[i-1][j+1] == true) {
+                liveCells++;
+            }
+
+            if (matrix[i][j] == true)
+                return liveCells > 1 && liveCells < 4 ? true : false;
+            else
+                return liveCells == 3 ? true : false;
+        }
+
+        else if (j == columns-1) {
+            if (matrix[i-1][j] == true) {
+                liveCells++;
+            }
+            if (matrix[i][j-1] == true) {
+                liveCells++;
+            }
+            if (matrix[i-1][j-1] == true) {
+                liveCells++;
+            }
+
+            if (matrix[i][j] == true)
+                return liveCells > 1 && liveCells < 4 ? true : false;
+            else
+                return liveCells == 3 ? true : false;
+        }
+
+        else {
+            if (matrix[i][j-1] == true) {
+                liveCells++;
+            }
+            if (matrix[i-1][j-1] == true) {
+                liveCells++;
+            }
+            if (matrix[i-1][j] == true) {
+                liveCells++;
+            }
+            if (matrix[i-1][j+1] == true) {
+                liveCells++;
+            }
+            if (matrix[i][j+1] == true) {
+                liveCells++;
+            }
+
+            if (matrix[i][j] == true)
+                return liveCells > 1 && liveCells < 4 ? true : false;
+            else
+                return liveCells == 3 ? true : false;
+        }
+    }
+    else {
+        if (j == 0) {
+            if (matrix[i-1][j] == true) {
+                liveCells++;
+            }
+            if (matrix[i-1][j+1] == true) {
+                liveCells++;
+            }
+            if (matrix[i][j+1] == true) {
+                liveCells++;
+            }
+            if (matrix[i+1][j] == true) {
+                liveCells++;
+            }
+            if (matrix[i+1][j+1] == true) {
+                liveCells++;
+            }
+
+            if (matrix[i][j] == true)
+                return liveCells > 1 && liveCells < 4 ? true : false;
+            else
+                return liveCells == 3 ? true : false;
+        }
+
+        else if (j == columns-1) {
+            if (matrix[i-1][j] == true) {
+                liveCells++;
+            }
+            if (matrix[i-1][j-1] == true) {
+                liveCells++;
+            }
+            if (matrix[i][j-1] == true) {
+                liveCells++;
+            }
+            if (matrix[i+1][j] == true) {
+                liveCells++;
+            }
+            if (matrix[i+1][j-1] == true) {
+                liveCells++;
+            }
+
+            if (matrix[i][j] == true)
+                return liveCells > 1 && liveCells < 4 ? true : false;
+            else
+                return liveCells == 3 ? true : false;
+        }
+
+        else {
+            if (matrix[i-1][j-1] == true) {
+                liveCells++;
+            }
+            if (matrix[i-1][j] == true) {
+                liveCells++;
+            }
+            if (matrix[i-1][j+1] == true) {
+                liveCells++;
+            }
+            if (matrix[i][j-1] == true) {
+                liveCells++;
+            }
+            if (matrix[i][j+1] == true) {
+                liveCells++;
+            }
+            if (matrix[i+1][j-1] == true) {
+                liveCells++;
+            }
+            if (matrix[i+1][j] == true) {
+                liveCells++;
+            }
+            if (matrix[i+1][j+1] == true) {
+                liveCells++;
+            }
+
+            if (matrix[i][j] == true)
+                return liveCells > 1 && liveCells < 4 ? true : false;
+            else
+                return liveCells == 3 ? true : false;
+        }
+    }
+}

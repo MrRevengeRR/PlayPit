@@ -1,5 +1,6 @@
 #include "raylib.h"
 #include "firstPerson.h"
+#include "gameOfLife.h"
 
 typedef enum GameScreen { LoadingScreen = 0, MainMenu, Section3D, Section2D, SectionOther, GameOfLife} GameScreen;
 
@@ -15,8 +16,14 @@ int main(void)
     // Variables
     int frameCounter = 0;
 
-    //Objects
+    // 3D First Person
     Camera camera;
+
+    // Game of life
+    bool matrix[40][40];
+    const int rows = 40;
+    const int columns = 40;
+    const int cellSize = screenHeight/columns;
 
     //Other Variables
     Image mainMenuImg = LoadImage("C:\\Users\\Luci\\Documents\\C++\\.Projects\\PlayPit\\res\\PlayPit_MainMenu.png");     // Loaded in CPU memory (RAM)
@@ -47,10 +54,16 @@ int main(void)
                     init3DFirstPerson(camera);
                 }
                     
-                else if (IsKeyPressed(KEY_TWO) || IsKeyPressed(KEY_KP_2))
+                else if (IsKeyPressed(KEY_TWO) || IsKeyPressed(KEY_KP_2)) {
                     currentScreen = Section2D;
-                else if (IsKeyPressed(KEY_THREE) || IsKeyPressed(KEY_KP_4))
+                    frameCounter = 0;
+                    initGameOfLife(matrix, rows, columns);
+                }
+                    
+                else if (IsKeyPressed(KEY_THREE) || IsKeyPressed(KEY_KP_4)) {
                     currentScreen = SectionOther;
+                }
+                    
 
             }break;
 
@@ -59,7 +72,7 @@ int main(void)
             }break;
 
             case Section2D: {
-
+                
             }break;
 
             case SectionOther: {
@@ -92,7 +105,12 @@ int main(void)
                 }break;
 
                 case Section2D: {
-
+                    ClearBackground(BLACK);
+                    while (frameCounter < 10) {
+                        frameCounter++;
+                    }
+                    frameCounter = 0;
+                    drawGameOfLife(matrix, rows, columns, cellSize);
                 }break;
 
                 case SectionOther: {
