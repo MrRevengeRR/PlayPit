@@ -8,7 +8,20 @@ void initGameOfLife(bool matrix[40][40], int rows, int columns) {
 
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < columns; j++) {
-            matrix[i][j] = rand() % 10 == 0 ? true : false;
+            matrix[i][j] = rand() % 16 == 0 ? true : false;
+        }
+    }
+}
+
+void updateGameOfLife(bool matrix[40][40], int rows, int columns) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < columns; j++) {
+            if (isAlive(matrix, i, j, rows, columns)) {
+                matrix[i][j] = true;
+            }
+            else {
+                matrix[i][j] = false;
+            } 
         }
     }
 }
@@ -17,10 +30,12 @@ void drawGameOfLife(bool matrix[40][40], int rows, int columns, int cellSize) {
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < columns; j++) {
             DrawRectangleLines(i * cellSize + 222, j * cellSize, cellSize, cellSize, LIGHTGRAY);
-            if (isAlive(matrix, i, j, rows, columns))
+            if (matrix[i][j] == true) {
                 DrawRectangle(i * cellSize + 223, j * cellSize+1, cellSize-2, cellSize-2, YELLOW);
-            else
+            }
+            else {
                 DrawRectangle(i * cellSize + 223, j * cellSize+1, cellSize-2, cellSize-2, BLACK);
+            } 
         }
     }
 }

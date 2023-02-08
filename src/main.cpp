@@ -20,15 +20,20 @@ int main(void)
     Camera camera;
 
     // Game of life
-    bool matrix[40][40];
+    bool matrix[40][40] = {false};
     const int rows = 40;
     const int columns = 40;
     const int cellSize = screenHeight/columns;
 
-    //Other Variables
-    Image mainMenuImg = LoadImage("C:\\Users\\Luci\\Documents\\C++\\.Projects\\PlayPit\\res\\PlayPit_MainMenu.png");     // Loaded in CPU memory (RAM)
-    Texture2D mainMenuTexture = LoadTextureFromImage(mainMenuImg);          // Loaded in GPU memory (VRAM)
-    UnloadImage(mainMenuImg);          
+    // Other Variables
+    // Loading in CPU memory (RAM)
+    Image mainMenuImg = LoadImage("C:\\Users\\Luci\\Documents\\C++\\.Projects\\PlayPit\\res\\PlayPit_MainMenu.png");
+    Image section2DImg = LoadImage("C:\\Users\\Luci\\Documents\\C++\\.Projects\\PlayPit\\res\\PlayPit_2DSection.png"); 
+    // Loading in GPU memory (VRAM)
+    Texture2D mainMenuTexture = LoadTextureFromImage(mainMenuImg);
+    Texture2D section2DTexture = LoadTextureFromImage(section2DImg);
+    // Unloading images from CPU
+    UnloadImage(mainMenuImg);
 
     SetTargetFPS(60);               
 
@@ -56,15 +61,12 @@ int main(void)
                     
                 else if (IsKeyPressed(KEY_TWO) || IsKeyPressed(KEY_KP_2)) {
                     currentScreen = Section2D;
-                    frameCounter = 0;
-                    initGameOfLife(matrix, rows, columns);
                 }
                     
                 else if (IsKeyPressed(KEY_THREE) || IsKeyPressed(KEY_KP_4)) {
                     currentScreen = SectionOther;
                 }
                     
-
             }break;
 
             case Section3D: {
@@ -72,7 +74,16 @@ int main(void)
             }break;
 
             case Section2D: {
-                
+                if (IsKeyPressed(KEY_ONE) || IsKeyPressed(KEY_KP_1)) {
+                    currentScreen = GameOfLife;
+                    frameCounter = 0;
+                    initGameOfLife(matrix, rows, columns);
+                }
+
+                else if (IsKeyPressed(KEY_B)) {
+                    currentScreen = MainMenu;
+                }
+
             }break;
 
             case SectionOther: {
@@ -80,7 +91,14 @@ int main(void)
             }break;
 
             case GameOfLife: {
-
+                if (IsKeyPressed(KEY_B)) {
+                    currentScreen = Section2D;
+                }
+                updateGameOfLife(matrix, rows, columns);
+                while (frameCounter < 20) {
+                    frameCounter++;
+                }
+                frameCounter = 0;
             }break;
         }
 
@@ -105,12 +123,7 @@ int main(void)
                 }break;
 
                 case Section2D: {
-                    ClearBackground(BLACK);
-                    while (frameCounter < 10) {
-                        frameCounter++;
-                    }
-                    frameCounter = 0;
-                    drawGameOfLife(matrix, rows, columns, cellSize);
+                    DrawTexture(section2DTexture, 0, 0, WHITE);
                 }break;
 
                 case SectionOther: {
@@ -118,7 +131,8 @@ int main(void)
                 }break;
 
                 case GameOfLife: {
-
+                    ClearBackground(BLACK);
+                    drawGameOfLife(matrix, rows, columns, cellSize);
                 }
             }
 
