@@ -141,8 +141,35 @@ int main(void)
 
                 case GameOfLife: {
                     ClearBackground(BLACK);
-                    if (frameCounterLimit == 0)
-                        DrawCircle(10, 18, 6, RAYWHITE);
+                    DrawText("Settings", 8, 4, 50, RAYWHITE);
+                    DrawText("Speed:", 5, 60, 25, RAYWHITE);
+                    DrawText("Press b to go back", 5, 780, 20, RAYWHITE);
+                    if (frameCounterLimit <= 60)
+                        DrawCircle(10, 100, 6, RAYWHITE);
+                    if (frameCounterLimit <= 55)
+                        DrawCircle(24, 100, 6, RAYWHITE);
+                    if (frameCounterLimit <= 50)
+                        DrawCircle(38, 100, 6, RAYWHITE);
+                    if (frameCounterLimit <= 45)
+                        DrawCircle(52, 100, 6, RAYWHITE);
+                    if (frameCounterLimit <= 40)
+                        DrawCircle(66, 100, 6, RAYWHITE);
+                    if (frameCounterLimit <= 35)
+                        DrawCircle(80, 100, 6, RAYWHITE);
+                    if (frameCounterLimit <= 30)
+                        DrawCircle(94, 100, 6, RAYWHITE);
+                    if (frameCounterLimit <= 25)
+                        DrawCircle(108, 100, 6, RAYWHITE);
+                    if (frameCounterLimit <= 20)
+                        DrawCircle(122, 100, 6, RAYWHITE);
+                    if (frameCounterLimit <= 15)
+                        DrawCircle(136, 100, 6, RAYWHITE);
+                    if (frameCounterLimit <= 10)
+                        DrawCircle(150, 100, 6, RAYWHITE);
+                    if (frameCounterLimit <= 5)
+                        DrawCircle(164, 100, 6, RAYWHITE);
+                    if (frameCounterLimit <= 0)
+                        DrawCircle(178, 100, 6, RAYWHITE);
                     drawGameOfLife(matrix, rows, columns, cellSize);
                 }
             }
