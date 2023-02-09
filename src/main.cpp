@@ -15,7 +15,7 @@ int main(void)
 
     // Variables
     int frameCounter = 0;
-    int frameCounterLimit;
+    int frameCounterLimit = 0;
 
     // 3D First Person
     Camera camera;
@@ -141,7 +141,8 @@ int main(void)
 
                 case GameOfLife: {
                     ClearBackground(BLACK);
-                    DrawText("Test", 0, 0, 20, RAYWHITE);
+                    if (frameCounterLimit == 0)
+                        DrawCircle(10, 18, 6, RAYWHITE);
                     drawGameOfLife(matrix, rows, columns, cellSize);
                 }
             }
