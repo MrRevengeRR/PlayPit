@@ -15,7 +15,7 @@ int main(void)
 
     // Variables
     int frameCounter = 0;
-    int frameCounterLimit = 30;
+    int frameCounterLimit;
 
     // 3D First Person
     Camera camera;
@@ -78,7 +78,7 @@ int main(void)
                 if (IsKeyPressed(KEY_ONE) || IsKeyPressed(KEY_KP_1)) {
                     currentScreen = GameOfLife;
                     frameCounter = 0;
-                    frameCounterLimit = 30;
+                    frameCounterLimit = 15;
                     initGameOfLife(matrix, rows, columns);
                 }
 
@@ -93,20 +93,21 @@ int main(void)
             }break;
 
             case GameOfLife: {
+                frameCounter++;
                 if (IsKeyPressed(KEY_B)) {
                     currentScreen = Section2D;
                 }
-                if ((IsKeyPressed(KEY_KP_ADD) || IsKeyPressed(KEY_D)) && frameCounterLimit > 10) {
+                if ((IsKeyPressed(KEY_KP_ADD) || IsKeyPressed(KEY_D)) && frameCounterLimit > 0) {
                     frameCounterLimit -= 5;
                 }
                 if ((IsKeyPressed(KEY_KP_SUBTRACT) || IsKeyPressed(KEY_A)) && frameCounterLimit < 60) {
                     frameCounterLimit += 5;
                 }
-                updateGameOfLife(matrix, rows, columns);
-                while (frameCounter < frameCounterLimit) {
-                    frameCounter++;
+
+                if (frameCounter >= frameCounterLimit) {
+                    frameCounter = 0;
+                    updateGameOfLife(matrix, rows, columns);
                 }
-                frameCounter = 0;
             }break;
         }
 
@@ -140,6 +141,7 @@ int main(void)
 
                 case GameOfLife: {
                     ClearBackground(BLACK);
+                    DrawText("Test", 0, 0, 20, RAYWHITE);
                     drawGameOfLife(matrix, rows, columns, cellSize);
                 }
             }
