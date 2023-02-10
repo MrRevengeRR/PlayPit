@@ -50,6 +50,14 @@ void drawGameOfLife(bool matrix[40][40], int rows, int columns, int cellSize) {
     }
 }
 
+void resetGameOfLife(bool matrix[40][40], int rows, int columns) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < columns; j++) {
+            matrix[i][j] = false;
+        }
+    }
+}
+
 bool isAlive(bool matrix[40][40], int i, int j, int rows, int columns) {
     int liveCells = 0;
     

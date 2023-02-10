@@ -121,6 +121,9 @@ int main(void)
                     drawing = !drawing;
                     gameOfLifeGen = 0;
                 }
+                if (IsKeyPressed(KEY_R)) {
+                    resetGameOfLife(matrix, rows, columns);
+                }
 
                 if (drawing) {
                     if (IsKeyPressed(KEY_RIGHT))
@@ -182,7 +185,7 @@ int main(void)
                     DrawText("Press B to go back", 4, 780, 20, RAYWHITE);
                     DrawText("Generate random (G)", 4, 130, 20, RAYWHITE);
                     DrawText("Draw (O)", 4, 170, 20, LIGHTGRAY);
-                    DrawText(TextFormat("Generation: %d", gameOfLifeGen), 2, 230, 20, RAYWHITE);
+                    DrawText(TextFormat("Generation: %d", gameOfLifeGen), 2, 254, 20, RAYWHITE);
 
                     drawGameOfLife(matrix, rows, columns, cellSize);
 
@@ -190,11 +193,13 @@ int main(void)
                         if (!playing) {
                             DrawText("Press enter to start", 2, 200, 20, GREEN);
                             DrawText("Enter draw mode (E)", 4, 150, 20, RAYWHITE);
+                            DrawText("Reset (R)", 2, 222, 20, RAYWHITE);
                         }
                         else {
                             DrawText("Press enter to stop", 2, 200, 20, RED);
                             DrawText("Generate random (G)", 4, 130, 20, LIGHTGRAY);
                             DrawText("Enter draw mode (E)", 4, 150, 20, LIGHTGRAY);
+                            DrawText("Reset (R)", 2, 222, 20, GRAY);
                         }
                     }
                     else {
@@ -202,6 +207,7 @@ int main(void)
                         DrawText("Generate random (G)", 4, 130, 20, LIGHTGRAY);
                         DrawText("Exit draw mode (E)", 4, 150, 20, RAYWHITE);
                         DrawText("Draw (O)", 4, 170, 20, GREEN);
+                        DrawText("Reset (R)", 2, 222, 20, RAYWHITE);
                         DrawRectangle(drawPos.row * cellSize + 223, drawPos.col * cellSize+1, cellSize-2, cellSize-2, GREEN);
                     }
 
