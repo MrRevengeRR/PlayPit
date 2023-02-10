@@ -22,6 +22,13 @@ int main(void)
 
     // Game of life
     bool matrix[40][40] = {false};
+    bool tempMatrix[40][40] = {false};
+    bool playing = false;
+    bool drawing = false;
+    unsigned gameOfLifeGen = 0;
+    struct {
+        int row = 0, col = 0;
+    }drawPos;
     const int rows = 40;
     const int columns = 40;
     const int cellSize = screenHeight/columns;
@@ -79,7 +86,6 @@ int main(void)
                     currentScreen = GameOfLife;
                     frameCounter = 0;
                     frameCounterLimit = 15;
-                    initGameOfLife(matrix, rows, columns);
                 }
 
                 else if (IsKeyPressed(KEY_B)) {
@@ -93,9 +99,10 @@ int main(void)
             }break;
 
             case GameOfLife: {
-                frameCounter++;
                 if (IsKeyPressed(KEY_B)) {
                     currentScreen = Section2D;
+                    playing = false;
+                    drawing = false;
                 }
                 if ((IsKeyPressed(KEY_KP_ADD) || IsKeyPressed(KEY_D)) && frameCounterLimit > 0) {
                     frameCounterLimit -= 5;
@@ -103,11 +110,40 @@ int main(void)
                 if ((IsKeyPressed(KEY_KP_SUBTRACT) || IsKeyPressed(KEY_A)) && frameCounterLimit < 60) {
                     frameCounterLimit += 5;
                 }
-
-                if (frameCounter >= frameCounterLimit) {
-                    frameCounter = 0;
-                    updateGameOfLife(matrix, rows, columns);
+                if (IsKeyPressed(KEY_ENTER) && !drawing) {
+                    playing = !playing;
                 }
+                if (IsKeyPressed(KEY_G) && !drawing && !playing) {
+                    initGameOfLife(matrix, rows, columns);
+                    gameOfLifeGen = 0;
+                }
+                if (IsKeyPressed(KEY_E) && !playing) {
+                    drawing = !drawing;
+                    gameOfLifeGen = 0;
+                }
+
+                if (drawing) {
+                    if (IsKeyPressed(KEY_RIGHT))
+                        drawPos.row = drawPos.row < rows-1 ? drawPos.row + 1 : drawPos.row;
+                    if (IsKeyPressed(KEY_LEFT))
+                        drawPos.row = drawPos.row > 0 ? drawPos.row - 1 : drawPos.row;
+                    if (IsKeyPressed(KEY_UP))
+                        drawPos.col = drawPos.col > 0 ? drawPos.col - 1 : drawPos.col;
+                    if (IsKeyPressed(KEY_DOWN))
+                        drawPos.col = drawPos.col < rows-1 ? drawPos.col + 1 : drawPos.col;
+                    if (IsKeyPressed(KEY_O))
+                        matrix[drawPos.row][drawPos.col] = !matrix[drawPos.row][drawPos.col];
+                }
+
+                if (playing) {
+                    frameCounter++;
+                    if (frameCounter >= frameCounterLimit) {
+                        frameCounter = 0;
+                        gameOfLifeGen++;
+                        updateGameOfLife(matrix, rows, columns, tempMatrix);
+                    }
+                }
+                
             }break;
         }
 
@@ -142,8 +178,33 @@ int main(void)
                 case GameOfLife: {
                     ClearBackground(BLACK);
                     DrawText("Settings", 8, 4, 50, RAYWHITE);
-                    DrawText("Speed:", 5, 60, 25, RAYWHITE);
-                    DrawText("Press b to go back", 5, 780, 20, RAYWHITE);
+                    DrawText("Speed:", 4, 60, 25, RAYWHITE);
+                    DrawText("Press B to go back", 4, 780, 20, RAYWHITE);
+                    DrawText("Generate random (G)", 4, 130, 20, RAYWHITE);
+                    DrawText("Draw (O)", 4, 170, 20, LIGHTGRAY);
+                    DrawText(TextFormat("Generation: %d", gameOfLifeGen), 2, 230, 20, RAYWHITE);
+
+                    drawGameOfLife(matrix, rows, columns, cellSize);
+
+                    if (!drawing) {
+                        if (!playing) {
+                            DrawText("Press enter to start", 2, 200, 20, GREEN);
+                            DrawText("Enter draw mode (E)", 4, 150, 20, RAYWHITE);
+                        }
+                        else {
+                            DrawText("Press enter to stop", 2, 200, 20, RED);
+                            DrawText("Generate random (G)", 4, 130, 20, LIGHTGRAY);
+                            DrawText("Enter draw mode (E)", 4, 150, 20, LIGHTGRAY);
+                        }
+                    }
+                    else {
+                        DrawText("Press enter to start", 2, 200, 20, LIGHTGRAY);
+                        DrawText("Generate random (G)", 4, 130, 20, LIGHTGRAY);
+                        DrawText("Exit draw mode (E)", 4, 150, 20, RAYWHITE);
+                        DrawText("Draw (O)", 4, 170, 20, GREEN);
+                        DrawRectangle(drawPos.row * cellSize + 223, drawPos.col * cellSize+1, cellSize-2, cellSize-2, GREEN);
+                    }
+
                     if (frameCounterLimit <= 60)
                         DrawCircle(10, 100, 6, RAYWHITE);
                     if (frameCounterLimit <= 55)
@@ -170,7 +231,6 @@ int main(void)
                         DrawCircle(164, 100, 6, RAYWHITE);
                     if (frameCounterLimit <= 0)
                         DrawCircle(178, 100, 6, RAYWHITE);
-                    drawGameOfLife(matrix, rows, columns, cellSize);
                 }
             }
 

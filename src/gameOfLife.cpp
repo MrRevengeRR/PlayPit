@@ -8,19 +8,29 @@ void initGameOfLife(bool matrix[40][40], int rows, int columns) {
 
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < columns; j++) {
-            matrix[i][j] = rand() % 16 == 0 ? true : false;
+            matrix[i][j] = rand() % 8 == 0 ? true : false;
         }
     }
 }
 
-void updateGameOfLife(bool matrix[40][40], int rows, int columns) {
+void updateGameOfLife(bool matrix[40][40], int rows, int columns, bool tempMatrix[40][40]) {
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < columns; j++) {
             if (isAlive(matrix, i, j, rows, columns)) {
-                matrix[i][j] = true;
+                tempMatrix[i][j] = true;
             }
             else {
-                matrix[i][j] = false;
+                tempMatrix[i][j] = false;
+            } 
+        }
+    }
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < columns; j++) {
+            if (isAlive(matrix, i, j, rows, columns)) {
+                matrix[i][j] = tempMatrix[i][j];
+            }
+            else {
+                matrix[i][j] = tempMatrix[i][j];
             } 
         }
     }
