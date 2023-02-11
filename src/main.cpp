@@ -123,6 +123,7 @@ int main(void)
                 }
                 if (IsKeyPressed(KEY_R)) {
                     resetGameOfLife(matrix, rows, columns);
+                    gameOfLifeGen = 0;
                 }
 
                 if (drawing) {
