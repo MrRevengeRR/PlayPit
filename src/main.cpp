@@ -182,7 +182,7 @@ int main(void)
                 case GameOfLife: {
                     ClearBackground(BLACK);
                     DrawText("Settings", 8, 4, 50, RAYWHITE);
-                    DrawText("Speed:", 4, 60, 25, RAYWHITE);
+                    DrawText("Speed (A/D):", 4, 60, 25, RAYWHITE);
                     DrawText("Press B to go back", 4, 780, 20, RAYWHITE);
                     DrawText("Generate random (G)", 4, 130, 20, RAYWHITE);
                     DrawText("Draw (O)", 4, 170, 20, LIGHTGRAY);
