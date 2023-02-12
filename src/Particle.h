@@ -25,7 +25,7 @@ Particle::Particle(int screenWidth, int screenHeight) {
     position.y = GetRandomValue(0, screenHeight-1);
     velocity.x = GetRandomValue(-100, 100) / 100.f;
     velocity.y = GetRandomValue(-100, 100) / 100.f;
-    // color = (Color){GetRandomValue(0,255),GetRandomValue(0,255),GetRandomValue(0,255),255};
+    //color = {GetRandomValue(0,255),GetRandomValue(0,255),GetRandomValue(0,255),255};
     color = {0,0,0,100};
 }
 
