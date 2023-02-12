@@ -1,8 +1,11 @@
+#include <stdlib.h>
+
 #include "raylib.h"
 #include "firstPerson.h"
 #include "gameOfLife.h"
+#include "Particle.h"
 
-typedef enum GameScreen { LoadingScreen = 0, MainMenu, Section3D, Section2D, SectionOther, GameOfLife} GameScreen;
+typedef enum GameScreen { LoadingScreen = 0, MainMenu, Section3D, Section2D, SectionOther, GameOfLife, ParticleSimulation} GameScreen;
 
 int main(void)
 {
@@ -32,6 +35,10 @@ int main(void)
     const int rows = 40;
     const int columns = 40;
     const int cellSize = screenHeight/columns;
+
+    // Particle simulation
+    const int particleCount = 100000;
+    Particle *particles = (Particle*)malloc(particleCount * sizeof(Particle));
 
     // Other Variables
     // Loading in CPU memory (RAM)
@@ -86,6 +93,13 @@ int main(void)
                     currentScreen = GameOfLife;
                     frameCounter = 0;
                     frameCounterLimit = 15;
+                }
+                
+                else if (IsKeyPressed(KEY_TWO) || IsKeyPressed(KEY_KP_2)) {
+                    currentScreen = ParticleSimulation;
+                    for (long int i = 0; i < particleCount; i++) {
+                        particles[i] = Particle(screenWidth, screenHeight);
+                    }
                 }
 
                 else if (IsKeyPressed(KEY_B)) {
@@ -148,6 +162,18 @@ int main(void)
                     }
                 }
                 
+            }break;
+
+            case ParticleSimulation: {
+                if (IsKeyPressed(KEY_B)) {
+                    currentScreen = Section2D;
+                }
+                Vector2 mousePos = {(float)GetMouseX(), (float)GetMouseY()};
+                for (long int i = 0; i < particleCount; i++) {   
+                    particles[i].attract(mousePos, 1);
+                    particles[i].doFriction(0.99);
+                    particles[i].move(screenWidth, screenHeight);
+                }
             }break;
         }
 
@@ -239,6 +265,12 @@ int main(void)
                     if (frameCounterLimit <= 0)
                         DrawCircle(178, 100, 6, RAYWHITE);
                 }
+
+                case ParticleSimulation: {
+                    for (int i = 0; i < particleCount; i++) {
+                        particles[i].drawPixel();
+                    }
+                }break;
             }
 
         EndDrawing();
