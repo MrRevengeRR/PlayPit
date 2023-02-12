@@ -18,6 +18,7 @@ class Particle {
         void doFriction(float amount);
         void move(int screenWidth, int screenHeight);
         void drawPixel();
+        void reset();
 };
 
 Particle::Particle(int screenWidth, int screenHeight) {
@@ -78,4 +79,10 @@ void Particle::move(int screenWidth, int screenHeight) {
 
 void Particle::drawPixel() {
     DrawPixelV(position, color);
+}
+
+void Particle::reset() {
+    position.x = -10;
+    position.y = -10;
+    drawPixel();
 }

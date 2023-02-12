@@ -37,7 +37,7 @@ int main(void)
     const int cellSize = screenHeight/columns;
 
     // Particle simulation
-    const int particleCount = 100000;
+    const int particleCount = 169000;
     Particle *particles = (Particle*)malloc(particleCount * sizeof(Particle));
 
     // Other Variables
@@ -166,6 +166,9 @@ int main(void)
 
             case ParticleSimulation: {
                 if (IsKeyPressed(KEY_B)) {
+                    for (long int i = 0; i < particleCount; i++) {
+                        particles[i].reset();
+                    }
                     currentScreen = Section2D;
                 }
                 Vector2 mousePos = {(float)GetMouseX(), (float)GetMouseY()};
