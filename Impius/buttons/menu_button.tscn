@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://styles/button_noBackground.tres" type="StyleBox" id=1]
+[ext_resource path="res://fonts/zelda-dx-tt-brk.regular.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://scripts/menu_button.gd" type="Script" id=3]
+
+[sub_resource type="DynamicFont" id=1]
+size = 11
+font_data = ExtResource( 2 )
+
+[node name="Button" type="Button"]
+margin_right = 34.0
+margin_bottom = 28.0
+custom_colors/font_color_disabled = Color( 0.705882, 0.705882, 0.705882, 1 )
+custom_colors/font_color_focus = Color( 0.992157, 1, 0.223529, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 1 )
+custom_styles/hover = ExtResource( 1 )
+custom_styles/pressed = ExtResource( 1 )
+custom_styles/focus = ExtResource( 1 )
+custom_styles/disabled = ExtResource( 1 )
+custom_styles/normal = ExtResource( 1 )
+text = "Play"
+script = ExtResource( 3 )

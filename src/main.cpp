@@ -5,7 +5,9 @@
 #include "gameOfLife.h"
 #include "Particle.h"
 
-typedef enum GameScreen { LoadingScreen = 0, MainMenu, Section3D, Section2D, SectionOther, GameOfLife, ParticleSimulation} GameScreen;
+typedef enum GameScreen { LoadingScreen = 0, MainMenu, Section3D, Section2D, GameOfLife, ParticleSimulation, Impius} GameScreen;
+
+void toggleFullscreen(int screenWidth, int screenHeight);
 
 int main(void)
 {
@@ -40,6 +42,9 @@ int main(void)
     const int particleCount = 169000;
     Particle *particles = (Particle*)malloc(particleCount * sizeof(Particle));
 
+    // Impius
+    
+
     // Other Variables
     // Loading in CPU memory (RAM)
     Image mainMenuImg = LoadImage("C:\\Users\\Luci\\Documents\\C++\\.Projects\\PlayPit\\res\\PlayPit_MainMenu.png");
@@ -49,6 +54,7 @@ int main(void)
     Texture2D section2DTexture = LoadTextureFromImage(section2DImg);
     // Unloading images from CPU
     UnloadImage(mainMenuImg);
+    UnloadImage(section2DImg);
 
     SetTargetFPS(60);               
 
@@ -79,7 +85,8 @@ int main(void)
                 }
                     
                 else if (IsKeyPressed(KEY_THREE) || IsKeyPressed(KEY_KP_4)) {
-                    currentScreen = SectionOther;
+                    currentScreen = Impius;
+                    toggleFullscreen(screenWidth, screenHeight);
                 }
                     
             }break;
@@ -105,10 +112,6 @@ int main(void)
                 else if (IsKeyPressed(KEY_B)) {
                     currentScreen = MainMenu;
                 }
-
-            }break;
-
-            case SectionOther: {
 
             }break;
 
@@ -178,6 +181,10 @@ int main(void)
                     particles[i].move(screenWidth, screenHeight);
                 }
             }break;
+
+            case Impius: {
+                
+            }break;
         }
 
         // Draw
@@ -202,10 +209,6 @@ int main(void)
 
                 case Section2D: {
                     DrawTexture(section2DTexture, 0, 0, WHITE);
-                }break;
-
-                case SectionOther: {
-
                 }break;
 
                 case GameOfLife: {
@@ -274,6 +277,10 @@ int main(void)
                         particles[i].drawPixel();
                     }
                 }break;
+
+                case Impius: {
+
+                }break;
             }
 
         EndDrawing();
@@ -281,7 +288,20 @@ int main(void)
 
     // De-Initialization
     UnloadTexture(mainMenuTexture);
+    UnloadTexture(section2DTexture);
 
     CloseWindow();
     return 0;
+}
+
+void toggleFullscreen(int screenWidth, int screenHeight) {
+    if (!IsWindowFullscreen()) {
+        int monitor = GetCurrentMonitor();
+        SetWindowSize(GetMonitorWidth(monitor), GetMonitorHeight(monitor));
+        ToggleFullscreen();
+    }
+    else {
+        ToggleFullscreen();
+        SetWindowSize(screenWidth, screenHeight);
+    }
 }
