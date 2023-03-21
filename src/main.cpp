@@ -45,10 +45,10 @@ int main(void)
     // Impius
     
 
-    // Other Variables
+    // Images
     // Loading in CPU memory (RAM)
-    Image mainMenuImg = LoadImage("C:\\Users\\Luci\\Documents\\C++\\.Projects\\PlayPit\\res\\PlayPit_MainMenu.png");
-    Image section2DImg = LoadImage("C:\\Users\\Luci\\Documents\\C++\\.Projects\\PlayPit\\res\\PlayPit_2DSection.png"); 
+    Image mainMenuImg = LoadImage("resources/PlayPit_MainMenu.png");
+    Image section2DImg = LoadImage("resources/PlayPit_2DSection.png"); 
     // Loading in GPU memory (VRAM)
     Texture2D mainMenuTexture = LoadTextureFromImage(mainMenuImg);
     Texture2D section2DTexture = LoadTextureFromImage(section2DImg);
