@@ -4,8 +4,9 @@
 #include "firstPerson.h"
 #include "gameOfLife.h"
 #include "Particle.h"
+#include "blackjack.h"
 
-typedef enum GameScreen { LoadingScreen = 0, MainMenu, Section3D, Section2D, GameOfLife, ParticleSimulation, Impius} GameScreen;
+typedef enum GameScreen {LoadingScreen = 0, MainMenu, Section3D, Section2D, GameOfLife, ParticleSimulation, Impius, Blackjack} GameScreen;
 
 void toggleFullscreen(int screenWidth, int screenHeight);
 
@@ -44,17 +45,46 @@ int main(void)
 
     // Impius
     
+    //Blackjack
+    bool bjInGame = false;
+    bool playerStand = false;
+    bool playerWon = false;
+    bool dealerWon = false;
+    int card1 = 0, card2 = 0, card3 = 0, card4 = 0, card5 = 0;
+    int dCard1 = 0, dCard2 = 0, dCard3 = 0, dCard4 = 0, dCard5 = 0;
+    int playerSum = 0, dealerSum = 0;
+
+    Texture cards[54] = {
+        LoadTexture("null"),
+        LoadTexture("resources/playing_cards/clubs_2.png"), LoadTexture("resources/playing_cards/diamonds_2.png"), LoadTexture("resources/playing_cards/hearts_2.png"), LoadTexture("resources/playing_cards/spades_2.png"),
+        LoadTexture("resources/playing_cards/clubs_3.png"), LoadTexture("resources/playing_cards/diamonds_3.png"), LoadTexture("resources/playing_cards/hearts_3.png"), LoadTexture("resources/playing_cards/spades_3.png"),
+        LoadTexture("resources/playing_cards/clubs_4.png"), LoadTexture("resources/playing_cards/diamonds_4.png"), LoadTexture("resources/playing_cards/hearts_4.png"), LoadTexture("resources/playing_cards/spades_4.png"),
+        LoadTexture("resources/playing_cards/clubs_5.png"), LoadTexture("resources/playing_cards/diamonds_5.png"), LoadTexture("resources/playing_cards/hearts_5.png"), LoadTexture("resources/playing_cards/spades_5.png"),
+        LoadTexture("resources/playing_cards/clubs_6.png"), LoadTexture("resources/playing_cards/diamonds_6.png"), LoadTexture("resources/playing_cards/hearts_6.png"), LoadTexture("resources/playing_cards/spades_6.png"),
+        LoadTexture("resources/playing_cards/clubs_7.png"), LoadTexture("resources/playing_cards/diamonds_7.png"), LoadTexture("resources/playing_cards/hearts_7.png"), LoadTexture("resources/playing_cards/spades_7.png"),
+        LoadTexture("resources/playing_cards/clubs_8.png"), LoadTexture("resources/playing_cards/diamonds_8.png"), LoadTexture("resources/playing_cards/hearts_8.png"), LoadTexture("resources/playing_cards/spades_8.png"),
+        LoadTexture("resources/playing_cards/clubs_9.png"), LoadTexture("resources/playing_cards/diamonds_9.png"), LoadTexture("resources/playing_cards/hearts_9.png"), LoadTexture("resources/playing_cards/spades_9.png"),
+        LoadTexture("resources/playing_cards/clubs_10.png"), LoadTexture("resources/playing_cards/diamonds_10.png"), LoadTexture("resources/playing_cards/hearts_10.png"), LoadTexture("resources/playing_cards/spades_10.png"),
+        LoadTexture("resources/playing_cards/clubs_jack.png"), LoadTexture("resources/playing_cards/diamonds_jack.png"), LoadTexture("resources/playing_cards/hearts_jack.png"), LoadTexture("resources/playing_cards/spades_jack.png"),
+        LoadTexture("resources/playing_cards/clubs_queen.png"), LoadTexture("resources/playing_cards/diamonds_queen.png"), LoadTexture("resources/playing_cards/hearts_queen.png"), LoadTexture("resources/playing_cards/spades_queen.png"),
+        LoadTexture("resources/playing_cards/clubs_king.png"), LoadTexture("resources/playing_cards/diamonds_king.png"), LoadTexture("resources/playing_cards/hearts_king.png"), LoadTexture("resources/playing_cards/spades_king.png"),
+        LoadTexture("resources/playing_cards/clubs_ace.png"), LoadTexture("resources/playing_cards/diamonds_ace.png"), LoadTexture("resources/playing_cards/hearts_ace.png"), LoadTexture("resources/playing_cards/spades_ace.png"),
+        LoadTexture("resources/playing_cards/hidden.png")
+    };
 
     // Images
     // Loading in CPU memory (RAM)
     Image mainMenuImg = LoadImage("resources/PlayPit_MainMenu.png");
     Image section2DImg = LoadImage("resources/PlayPit_2DSection.png"); 
+    Image bjBackgroundImg = LoadImage("resources/blackjackBackground.png");
     // Loading in GPU memory (VRAM)
     Texture2D mainMenuTexture = LoadTextureFromImage(mainMenuImg);
     Texture2D section2DTexture = LoadTextureFromImage(section2DImg);
+    Texture2D bjBackgroundTexture = LoadTextureFromImage(bjBackgroundImg);
     // Unloading images from CPU
     UnloadImage(mainMenuImg);
     UnloadImage(section2DImg);
+    UnloadImage(bjBackgroundImg);
 
     SetTargetFPS(60);               
 
@@ -107,6 +137,10 @@ int main(void)
                     for (long int i = 0; i < particleCount; i++) {
                         particles[i] = Particle(screenWidth, screenHeight);
                     }
+                }
+
+                else if (IsKeyPressed(KEY_THREE) || IsKeyPressed(KEY_KP_3)) {
+                    currentScreen = Blackjack;
                 }
 
                 else if (IsKeyPressed(KEY_B)) {
@@ -185,6 +219,24 @@ int main(void)
             case Impius: {
                 
             }break;
+
+            case Blackjack: {
+                if (!bjInGame) {
+                    if (IsKeyPressed(KEY_ENTER)) {
+                        initBlackjack(card1, card2, dCard1, dCard2);
+                        bjInGame = true;
+                    }
+                    if (IsKeyPressed(KEY_B)) {
+                        currentScreen = Section2D;
+                    }
+                }
+                else {
+                    if (card1 >= 1 && card1 <= 4)
+                        playerSum += 2;
+                    else if (card1 >= 5 && card1 <= 8)
+                        playerSum += 3;
+                }
+            }
         }
 
         // Draw
@@ -281,6 +333,48 @@ int main(void)
                 case Impius: {
 
                 }break;
+
+                case Blackjack: {
+                    DrawTexture(bjBackgroundTexture, 0, 0, WHITE);
+                    if (!bjInGame)
+                        DrawText("Press enter to play", 370, 385, 50, YELLOW);
+                    else {
+                        DrawTexture(cards[dCard1], 125, 25, WHITE);
+                        if (!playerStand) {
+                            if (dCard2)
+                                DrawTexture(cards[53], 322, 25, WHITE);
+                            if (dCard3)
+                                DrawTexture(cards[53], 519, 25, WHITE);
+                            if (dCard4)
+                                DrawTexture(cards[53], 716, 25, WHITE);
+                            if (dCard5)
+                                DrawTexture(cards[53], 913, 25, WHITE);
+                        }
+
+                        DrawTexture(cards[card1], 125, 542, WHITE);
+                        DrawTexture(cards[card2], 322, 542, WHITE);
+                        DrawTexture(cards[card3], 519, 542, WHITE);
+                        DrawTexture(cards[card4], 716, 542, WHITE);
+                        DrawTexture(cards[card5], 913, 542, WHITE);
+                        /*
+                        Dealer card positions
+
+                        DrawTexture(cards[0], 125, 25, WHITE);
+                        DrawTexture(cards[0], 322, 25, WHITE);
+                        DrawTexture(cards[0], 519, 25, WHITE);
+                        DrawTexture(cards[0], 716, 25, WHITE);
+                        DrawTexture(cards[0], 913, 25, WHITE);
+
+                        Player card positions
+
+                        DrawTexture(cards[0], 125, 542, WHITE);
+                        DrawTexture(cards[0], 322, 542, WHITE);
+                        DrawTexture(cards[0], 519, 542, WHITE);
+                        DrawTexture(cards[0], 716, 542, WHITE);
+                        DrawTexture(cards[0], 913, 542, WHITE);
+                        */
+                    }
+                }
             }
 
         EndDrawing();
@@ -289,6 +383,7 @@ int main(void)
     // De-Initialization
     UnloadTexture(mainMenuTexture);
     UnloadTexture(section2DTexture);
+    UnloadTexture(bjBackgroundTexture);
 
     CloseWindow();
     return 0;
