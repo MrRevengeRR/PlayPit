@@ -20,13 +20,11 @@
 } CardInd;*/
 
 // Init
-void initBlackjack(int &card1, int &card2, int &dCard1, int &dCard2);
+void initBlackjack(int pCards[10]);
 // Draw
-void drawBlackjack(int card1, int card2, int card3, int card4, int card5, int dCard1, int dCard2, int dCard3, int dCard4, int dCard5);
-// Hit
-void hitBlackjack(int &card3, int &card4, int &card5);
+void hitBlackjack(int pCards[10]);
 // Dealer Hit
-void dealerHitBlackjack(int &dCard3, int &dCard4, int &dCard5);
+void dealerHitBlackjack(int pCards[10]);
 
 #endif
 
