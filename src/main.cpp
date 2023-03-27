@@ -1,7 +1,5 @@
 #include <stdlib.h>
 
-#include <iostream>
-
 #include "raylib.h"
 #include "firstPerson.h"
 #include "gameOfLife.h"
@@ -361,7 +359,7 @@ int main(void)
                             //playerStand = true;
                         
                         //std::cout << playerSum << " " << dealerSum << " " << playerWon << " " << dealerWon << "\n"; //debug
-                        std::cout << pCards[5] << " " << pCards[6] << " " << pCards[7] << " " << pCards[8] << " " << pCards[9] << " ";
+                        //std::cout << pCards[5] << " " << pCards[6] << " " << pCards[7] << " " << pCards[8] << " " << pCards[9] << " ";
                     }
                     if (IsKeyPressed(KEY_S) && !playerStand && !playerWon && !dealerWon) {
                         playerStand = true;
@@ -412,7 +410,7 @@ int main(void)
                         //if (dealerSum == 21 || playerSum > 21 || (playerSum == 21 && playerAces >= 1) || (dealerSum > playerSum) || (dealerSum == 20 && dealerAces == 1))
                         //    dealerWon = true;
                         //std::cout << playerSum << " " << dealerSum << " " << playerWon << " " << dealerWon << "\n"; //debug
-                        std::cout << pCards[5] << " " << pCards[6] << " " << pCards[7] << " " << pCards[8] << " " << pCards[9] << " ";
+                        //std::cout << pCards[5] << " " << pCards[6] << " " << pCards[7] << " " << pCards[8] << " " << pCards[9] << " ";
                     }       
                 }
                 else {

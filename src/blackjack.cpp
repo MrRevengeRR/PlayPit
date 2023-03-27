@@ -2,9 +2,6 @@
 #include <cstdlib>
 #include <time.h>
 
-#include <iostream>
-using namespace std; //debugging
-
 void initBlackjack(int pCards[10]) {
     // Init random seed
     srand(time(NULL));
@@ -19,8 +16,6 @@ void initBlackjack(int pCards[10]) {
     pCards[6]  = rand() % 51 + 1;
     while (pCards[6] == pCards[0] || pCards[6] == pCards[1] || pCards[6] == pCards[5])
         pCards[6]  = rand() % 51 + 1;
-    
-    cout << pCards[0] << " " << pCards[1] << " " << pCards[5] << " " << pCards[6] << "\n";
 }
 
 void hitBlackjack(int pCards[10]) {
