@@ -224,7 +224,7 @@ int main(void)
             }break;
 
             case Blackjack: {
-                if (!bjInGame || dealerWon || playerWon) {
+                if (!bjInGame) {
                     if (IsKeyPressed(KEY_ENTER)) {
                         playerWon = false;
                         dealerWon = false;
@@ -303,13 +303,14 @@ int main(void)
                         currentScreen = Section2D;
                     }
                 }
-                else {
+                else if (!playerWon && !dealerWon) {
                     if (IsKeyPressed(KEY_B)) {
                         for (int i = 0; i < 10; i++)
                             pCards[i] = 0;
                         bjInGame = false;
                         playerWon = false;
                         dealerWon = false;
+                        playerStand = false;
                         playerSum = 0;
                         dealerSum = 0;
                         //playerAces = 0;
@@ -359,13 +360,20 @@ int main(void)
                         //if (pCards[4] != 0)
                             //playerStand = true;
                         
-                        std::cout << playerSum << " " << dealerSum << " " << playerWon << " " << dealerWon << " "; //debug
+                        //std::cout << playerSum << " " << dealerSum << " " << playerWon << " " << dealerWon << "\n"; //debug
+                        std::cout << pCards[5] << " " << pCards[6] << " " << pCards[7] << " " << pCards[8] << " " << pCards[9] << " ";
                     }
                     if (IsKeyPressed(KEY_S) && !playerStand && !playerWon && !dealerWon) {
                         playerStand = true;
+                        frameCounterLimit = 60;
+                        frameCounter = 0;
                         while (dealerSum < 17 || pCards[9] != 0) {
                             dealerHitBlackjack(pCards);
                             dealerSum = 0;
+                            while (frameCounter < frameCounterLimit) {
+                                frameCounter++;
+                            }
+                            frameCounter = 0;
                             for (int i = 5; i < 10; i++) {
                                 if (pCards[i] >= 1 && pCards[i] <= 4)
                                     dealerSum += 2;
@@ -403,8 +411,101 @@ int main(void)
                         //    playerWon = true;
                         //if (dealerSum == 21 || playerSum > 21 || (playerSum == 21 && playerAces >= 1) || (dealerSum > playerSum) || (dealerSum == 20 && dealerAces == 1))
                         //    dealerWon = true;
-                        std::cout << playerSum << " " << dealerSum << " " << playerWon << " " << dealerWon << " "; //debug
+                        //std::cout << playerSum << " " << dealerSum << " " << playerWon << " " << dealerWon << "\n"; //debug
+                        std::cout << pCards[5] << " " << pCards[6] << " " << pCards[7] << " " << pCards[8] << " " << pCards[9] << " ";
                     }       
+                }
+                else {
+                    if (IsKeyPressed(KEY_ENTER)) {
+                        playerWon = false;
+                        dealerWon = false;
+                        playerStand = false;
+                        playerSum = 0;
+                        dealerSum = 0;
+                        for (int i = 0; i < 10; i++)
+                            pCards[i] = 0;
+                        //playerAces = 0;
+                        //dealerAces = 0;
+                        initBlackjack(pCards);
+                        for (int i = 0; i < 10; i++) {
+                            if (i < 5) {
+                                if (pCards[i] >= 1 && pCards[i] <= 4)
+                                    playerSum += 2;
+                                else if (pCards[i] >= 5 && pCards[i] <= 8)
+                                    playerSum += 3;
+                                else if (pCards[i] >= 9 && pCards[i] <= 12)
+                                    playerSum += 4;
+                                else if (pCards[i] >= 13 && pCards[i] <= 16)
+                                    playerSum += 5;
+                                else if (pCards[i] >= 17 && pCards[i] <= 20)
+                                    playerSum += 6;
+                                else if (pCards[i] >= 21 && pCards[i] <= 24)
+                                    playerSum += 7;
+                                else if (pCards[i] >= 25 && pCards[i] <= 28)
+                                    playerSum += 8;
+                                else if (pCards[i] >= 29 && pCards[i] <= 32)
+                                    playerSum += 9;
+                                else if (pCards[i] >= 33 && pCards[i] <= 48)
+                                    playerSum += 10;
+                                else if (pCards[i] >= 49 && pCards[i] <= 52) {
+                                    if (playerSum + 11 > 21)
+                                        playerSum += 1;
+                                    else 
+                                        playerSum += 11;
+                                }
+                                    //playerAces++;
+                            }
+                            else {
+                                if (pCards[i] >= 1 && pCards[i] <= 4)
+                                    dealerSum += 2;
+                                else if (pCards[i] >= 5 && pCards[i] <= 8)
+                                    dealerSum += 3;
+                                else if (pCards[i] >= 9 && pCards[i] <= 12)
+                                    dealerSum += 4;
+                                else if (pCards[i] >= 13 && pCards[i] <= 16)
+                                    dealerSum += 5;
+                                else if (pCards[i] >= 17 && pCards[i] <= 20)
+                                    dealerSum += 6;
+                                else if (pCards[i] >= 21 && pCards[i] <= 24)
+                                    dealerSum += 7;
+                                else if (pCards[i] >= 25 && pCards[i] <= 28)
+                                    dealerSum += 8;
+                                else if (pCards[i] >= 29 && pCards[i] <= 32)
+                                    dealerSum += 9;
+                                else if (pCards[i] >= 33 && pCards[i] <= 48)
+                                    dealerSum += 10;
+                                else if (pCards[i] >= 49 && pCards[i] <= 52) {
+                                    if (dealerSum + 11 > 21)
+                                        dealerSum += 1;
+                                    else 
+                                        dealerSum += 11;
+                                }
+                                    //dealerAces++;
+                            }
+                        }
+                        if (playerSum == 21 || dealerSum > 21)
+                            playerWon = true;
+                        if (dealerSum == 21 || playerSum > 21)
+                            dealerWon = true;
+                        //if ((playerSum == 20 && playerAces == 1) || (playerSum == 21 && playerAces == 0))
+                            //playerWon = true;
+                        //if (playerSum > 21 || (playerSum == 21 && playerAces >= 1))
+                            //dealerWon = true;
+                        bjInGame = true;
+                    }
+                    if (IsKeyPressed(KEY_B)) {
+                        for (int i = 0; i < 10; i++)
+                            pCards[i] = 0;
+                        bjInGame = false;
+                        playerWon = false;
+                        dealerWon = false;
+                        playerStand = false;
+                        playerSum = 0;
+                        dealerSum = 0;
+                        //playerAces = 0;
+                        //dealerAces = 0;
+                        currentScreen = Section2D;
+                    }
                 }
             }
         }
@@ -526,10 +627,10 @@ int main(void)
                                 DrawTexture(cards[53], 913, 25, WHITE);
                         }
                         else {
-                            DrawTexture(cards[6], 322, 25, WHITE);
-                            DrawTexture(cards[7], 519, 25, WHITE);
-                            DrawTexture(cards[8], 716, 25, WHITE);
-                            DrawTexture(cards[9], 913, 25, WHITE);
+                            DrawTexture(cards[pCards[6]], 322, 25, WHITE);
+                            DrawTexture(cards[pCards[7]], 519, 25, WHITE);
+                            DrawTexture(cards[pCards[8]], 716, 25, WHITE);
+                            DrawTexture(cards[pCards[9]], 913, 25, WHITE);
                         }
 
                         DrawTexture(cards[pCards[0]], 125, 542, WHITE);
