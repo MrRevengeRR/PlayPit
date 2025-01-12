@@ -600,7 +600,7 @@ int main(void)
                 }break;
 
                 case Impius: {
-
+                        DrawText("Nothing here yet", 500, 420, 100, BLACK);
                 }break;
 
                 case Blackjack: {
