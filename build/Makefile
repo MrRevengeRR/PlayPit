@@ -1,0 +1,2 @@
+default:
+	gcc ../src/main.cpp ../src/gameOfLife.cpp ../src/firstPerson.cpp ../src/blackjack.cpp -o PlayPit.exe -O2 -Wall -Wno-missing-braces -I ../include/ -L ../lib/ -lraylib -lopengl32 -lgdi32 -lwinmm -mwindows -static-libgcc
